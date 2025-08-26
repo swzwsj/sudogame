@@ -1,0 +1,424 @@
+/* 全局样式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 根变量定义 - 主题颜色 */
+:root {
+    /* 主题颜色 */
+    --color-primary: #ff6b6b;
+    --color-secondary: #4ecdc4;
+    --color-accent: #ffe66d;
+    --color-dark: #292f36;
+    --color-light: #f7fff7;
+    
+    /* 主题模式变量 */
+    --bg-primary: var(--color-light);
+    --bg-secondary: #e0f2f1;
+    --text-primary: var(--color-dark);
+    --text-secondary: #4a5568;
+}
+
+/* 深色主题 */
+.theme-dark {
+    --bg-primary: var(--color-dark);
+    --bg-secondary: #4a5568;
+    --text-primary: var(--color-light);
+    --text-secondary: #cbd5e0;
+}
+
+/* 通用样式 */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 主容器 */
+.container {
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* 标题 */
+header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+}
+
+header p {
+    font-size: 1.25rem;
+    color: var(--color-secondary);
+}
+
+/* 游戏控制面板 */
+.game-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    border: 2px solid var(--color-dark);
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.9);
+}
+
+/* 难度选择器 */
+.level-selector {
+    display: flex;
+    gap: 4px;
+}
+
+/* 数字选择面板 */
+.number-pad {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 8px;
+    max-width: 400px;
+    margin: 0 auto 24px auto;
+}
+
+/* 数独网格 */
+.sudoku-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0;
+    width: 288px;
+    height: 288px;
+    margin: 0 auto 24px auto;
+    border: 2px solid var(--color-dark);
+}
+
+@media (min-width: 768px) {
+    .sudoku-grid {
+        width: 432px;
+        height: 432px;
+    }
+}
+
+/* 单元格样式 */
+.sudoku-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: bold;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+}
+
+@media (min-width: 768px) {
+    .sudoku-cell {
+        font-size: 1.5rem;
+    }
+}
+
+.sudoku-cell.fixed {
+    background-color: rgba(247, 255, 247, 0.8);
+    cursor: default;
+    color: var(--color-dark);
+}
+
+.sudoku-cell.user-input {
+    color: var(--color-secondary);
+}
+
+.sudoku-cell:hover:not(.fixed) {
+    transform: scale(1.05);
+    box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.9);
+    z-index: 1;
+}
+
+.sudoku-cell.selected {
+    background-color: rgba(255, 107, 107, 0.3);
+}
+
+/* 3x3区块边框 */
+.sudoku-section-right {
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.sudoku-section-bottom {
+    border-right-width: 1px;
+    border-bottom-width: 3px;
+}
+
+.sudoku-section {
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 8px 16px;
+    border: 2px solid var(--color-dark);
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.9);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn:hover:not(:disabled) {
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.9);
+}
+
+.btn:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.9);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.9);
+}
+
+/* 按钮颜色变体 */
+.btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.btn-secondary {
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+.btn-accent {
+    background-color: var(--color-accent);
+    color: var(--color-dark);
+}
+
+.btn-light {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.btn-dark {
+    background-color: rgba(41, 47, 54, 0.2);
+    color: var(--color-dark);
+}
+
+/* 游戏信息面板 */
+.game-info {
+    background-color: var(--bg-primary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+    text-align: center;
+    border: 2px solid var(--color-dark);
+    box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.9);
+}
+
+#timer {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin-bottom: 8px;
+}
+
+#best-time {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--color-secondary);
+}
+
+/* 模态框样式 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--bg-primary);
+    border: 2px solid var(--color-dark);
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-content h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.modal-content p {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.modal-content ul {
+    text-align: left;
+    margin-bottom: 24px;
+    padding-left: 20px;
+}
+
+.modal-content li {
+    margin-bottom: 8px;
+}
+
+.modal-center {
+    display: flex;
+    justify-content: center;
+}
+
+/* 加载覆盖层 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.loading-content {
+    background-color: var(--bg-primary);
+    border: 2px solid var(--color-dark);
+    border-radius: 8px;
+    padding: 32px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.loading-content h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin-bottom: 24px;
+}
+
+/* 进度条 */
+.progress-bar {
+    width: 100%;
+    height: 24px;
+    background-color: #e0e0e0;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--color-secondary);
+    border-radius: 12px;
+    transition: width 0.3s ease;
+}
+
+/* 隐藏元素 */
+.hidden {
+    display: none !important;
+}
+
+/* 工具类 */
+.text-center {
+    text-align: center;
+}
+
+.mb-6 {
+    margin-bottom: 24px;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.gap-2 {
+    gap: 8px;
+}
+
+.gap-1 {
+    gap: 4px;
+}
+
+.mr-2 {
+    margin-right: 8px;
+}
+
+.mb-2 {
+    margin-bottom: 8px;
+}
+
+/* Font Awesome 图标样式内联 */
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.fa-refresh:before { content: "\f021"; }
+.fa-check:before { content: "\f00c"; }
+.fa-lightbulb-o:before { content: "\f0eb"; }
+.fa-volume-up:before { content: "\f028"; }
+.fa-volume-off:before { content: "\f026"; }
+.fa-sun-o:before { content: "\f185"; }
+.fa-moon-o:before { content: "\f186"; }
+.fa-home:before { content: "\f015"; }
+.fa-info-circle:before { content: "\f05a"; }
+.fa-times:before { content: "\f00d"; }
+.fa-chevron-left:before { content: "\f053"; }
+.fa-chevron-right:before { content: "\f054"; }
+.fa-eraser:before { content: "\f12d"; }
+.fa-question-circle:before { content: "\f059"; }

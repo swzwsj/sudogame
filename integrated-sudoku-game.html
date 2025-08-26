@@ -4,89 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>卡通数独 - 休闲益智游戏</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    
-    <!-- Tailwind 配置 -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#ff6b6b',
-                        secondary: '#4ecdc4',
-                        accent: '#ffe66d',
-                        dark: '#292f36',
-                        light: '#f7fff7',
-                    },
-                    fontFamily: {
-                        comic: ['Comic Sans MS', 'cursive', 'sans-serif'],
-                    },
-                    boxShadow: {
-                        'handdrawn': '3px 3px 0px 0px rgba(0, 0, 0, 0.9)',
-                    }
-                },
-            }
-        }
-    </script>
-    
-    <!-- 自定义样式 -->
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .content-auto {
-                content-visibility: auto;
-            }
-            .cell-hover:hover {
-                transform: scale(1.05);
-                box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 0.9);
-            }
-            .border-handdrawn {
-                border-width: 2px;
-                border-style: solid;
-                border-color: rgba(0, 0, 0, 0.9);
-            }
-            .sudoku-section {
-                border-right-width: 3px;
-                border-bottom-width: 3px;
-            }
-            .sudoku-section-right {
-                border-right-width: 1px;
-                border-bottom-width: 1px;
-            }
-            .sudoku-section-bottom {
-                border-right-width: 1px;
-                border-bottom-width: 3px;
-            }
-        }
-        
-        /* 主题样式 */
-        .theme-light {
-            --bg-primary: #f7fff7;
-            --bg-secondary: #e0f2f1;
-            --text-primary: #292f36;
-            --text-secondary: #4a5568;
-        }
-        
-        .theme-dark {
-            --bg-primary: #292f36;
-            --bg-secondary: #4a5568;
-            --text-primary: #f7fff7;
-            --text-secondary: #cbd5e0;
-        }
-        
-        /* 通用样式 */
-        body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-        }
-    </style>
+    <!-- 自定义CSS -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4 font-comic">
+<body>
     <!-- 主容器 -->
-    <div class="max-w-4xl w-full mx-auto">
+    <div class="container">
         <!-- 标题 -->
         <header class="text-center mb-6">
             <h1 class="text-4xl md:text-5xl font-bold text-primary mb-2">卡通数独</h1>
@@ -96,30 +19,30 @@
         <!-- 游戏控制面板 -->
         <div class="game-controls flex flex-wrap justify-between items-center mb-6 bg-light rounded-lg p-4 border-handdrawn shadow-handdrawn">
             <!-- 主题切换 -->
-            <button id="theme-toggle" class="btn-handdrawn bg-secondary border-dark text-white py-2 px-4 rounded-lg mr-2 mb-2 hover:bg-secondary/80 transition-colors">
+            <button id="theme-toggle" class="btn btn-secondary">
                 <i class="fa fa-moon-o mr-2"></i>切换主题
             </button>
             
             <!-- 难度选择器 -->
-            <div class="flex flex-col md:flex-row items-center mb-2 md:mb-0">
-                <label class="text-lg font-bold mr-2 mb-1 md:mb-0">难度:</label>
-                <div id="level-selector" class="flex gap-1">
+            <div class="flex flex-wrap align-center gap-2">
+                <label class="text-lg font-bold">难度:</label>
+                <div id="level-selector" class="level-selector gap-1">
                     <!-- 动态生成关卡选择按钮 -->
                 </div>
             </div>
             
             <!-- 游戏控制按钮 -->
             <div class="flex flex-wrap gap-2">
-                <button id="btn-hint" class="btn-handdrawn bg-accent border-dark text-dark py-2 px-4 rounded-lg hover:bg-accent/80 transition-colors">
+                <button id="btn-hint" class="btn btn-accent">
                     <i class="fa fa-lightbulb-o mr-2"></i>提示 (3)
                 </button>
-                <button id="btn-clear" class="btn-handdrawn bg-dark/20 border-dark text-dark py-2 px-4 rounded-lg hover:bg-dark/30 transition-colors">
+                <button id="btn-clear" class="btn btn-dark">
                     <i class="fa fa-eraser mr-2"></i>清除
                 </button>
-                <button id="btn-reset" class="btn-handdrawn bg-dark/20 border-dark text-dark py-2 px-4 rounded-lg hover:bg-dark/30 transition-colors">
+                <button id="btn-reset" class="btn btn-dark">
                     <i class="fa fa-refresh mr-2"></i>重置
                 </button>
-                <button id="btn-rules" class="btn-handdrawn bg-dark/20 border-dark text-dark py-2 px-4 rounded-lg hover:bg-dark/30 transition-colors">
+                <button id="btn-rules" class="btn btn-dark">
                     <i class="fa fa-question-circle mr-2"></i>规则
                 </button>
             </div>
@@ -127,32 +50,32 @@
         
         <!-- 数独网格 -->
         <div class="flex justify-center mb-6">
-            <div id="sudoku-grid" class="grid grid-cols-9 gap-0 w-[288px] md:w-[432px] aspect-square border-2 border-dark"></div>
+            <div id="sudoku-grid" class="sudoku-grid"></div>
         </div>
         
         <!-- 数字选择面板 -->
-        <div id="number-pad" class="grid grid-cols-3 md:grid-cols-9 gap-2 mb-6 max-w-md mx-auto"></div>
+        <div id="number-pad" class="number-pad"></div>
         
         <!-- 游戏信息面板 -->
-        <div class="bg-light rounded-lg p-4 border-handdrawn shadow-handdrawn text-center mb-6">
-            <div id="timer" class="text-xl font-bold text-primary"></div>
-            <div id="best-time" class="text-lg font-bold text-secondary"></div>
+        <div class="game-info bg-light rounded-lg p-4 border-handdrawn shadow-handdrawn text-center mb-6">
+            <div id="timer"></div>
+            <div id="best-time"></div>
         </div>
         
         <!-- 完成消息 -->
-        <div id="completion-message" class="hidden fixed inset-0 flex items-center justify-center bg-black/50 z-40">
-            <div class="bg-light border-handdrawn border-dark rounded-lg p-6 max-w-md w-full shadow-xl transform transition-all">
+        <div id="completion-message" class="modal hidden">
+            <div class="modal-content">
                 <h2 class="text-2xl font-bold text-primary mb-4">恭喜完成！</h2>
                 <p class="text-lg mb-6">你成功解决了这个数独谜题！</p>
-                <button id="next-level-btn" class="btn-handdrawn bg-primary border-dark text-white py-2 px-6 hover:bg-primary/80 transition-colors">
+                <button id="next-level-btn" class="btn btn-primary">
                     下一关
                 </button>
             </div>
         </div>
         
         <!-- 规则说明模态框 -->
-        <div id="rules-modal" class="hidden fixed inset-0 flex items-center justify-center bg-black/50 z-40">
-            <div class="bg-light border-handdrawn border-dark rounded-lg p-6 max-w-md w-full shadow-xl transform transition-all">
+        <div id="rules-modal" class="modal hidden">
+            <div class="modal-content">
                 <h2 class="text-2xl font-bold text-primary mb-4">数独规则</h2>
                 <ul class="text-left mb-6 space-y-2">
                     <li>1. 在9x9的网格中填入数字1-9</li>
@@ -161,35 +84,56 @@
                     <li>4. 使用提示功能获取帮助（有限次数）</li>
                     <li>5. 挑战不同难度级别，提升你的逻辑思维能力！</li>
                 </ul>
-                <button id="close-rules" class="btn-handdrawn bg-primary border-dark text-white py-2 px-6 hover:bg-primary/80 transition-colors">
+                <button id="close-rules" class="btn btn-primary">
                     了解了
                 </button>
             </div>
         </div>
         
         <!-- 加载提示 -->
-        <div id="loading-overlay" class="hidden fixed inset-0 flex flex-col items-center justify-center bg-black/70 z-50">
-            <div class="bg-light border-handdrawn border-dark rounded-lg p-8 max-w-md w-full shadow-xl">
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="loading-content">
                 <h2 class="text-2xl font-bold text-primary mb-6 text-center">生成谜题中...</h2>
-                <div class="w-full bg-gray-200 rounded-full h-6 mb-4">
-                    <div id="loading-bar" class="bg-secondary h-6 rounded-full transition-all duration-300" style="width: 0%"></div>
+                <div class="progress-bar mb-4">
+                    <div id="loading-bar" class="progress-fill" style="width: 0%"></div>
                 </div>
-                <p id="loading-message" class="text-center text-dark">准备生成谜题...</p>
-                <button id="cancel-loading" class="mt-6 w-full btn-handdrawn bg-dark/20 border-dark text-dark py-2 rounded-lg hover:bg-dark/30 transition-colors hidden">
+                <p id="loading-message" class="text-center">准备生成谜题...</p>
+                <button id="cancel-loading" class="mt-6 w-full btn btn-dark hidden">
                     取消加载
                 </button>
             </div>
         </div>
     </div>
     
-    <!-- 数独求解器模块 -->
-    <script src="sudoku-solver.js"></script>
+    <!-- 数独核心模块 -->
+    <script src="sudoku-core.js"></script>
     
     <!-- 游戏主逻辑 -->
     <script>
-        // 初始化数独求解器
+        // 初始化数独求解器 - 修复引用错误
+        class SudokuSolver {
+            constructor() {}
+            
+            solveGrid(grid) {
+                return SudokuCore.solveGrid(grid);
+            }
+            
+            isValid(grid, row, col, num) {
+                return SudokuCore.isValidPlacement(grid, row, col, num);
+            }
+        }
+        
         const sudokuSolver = new SudokuSolver();
         
+        // 专门的关卡配置
+        const levelConfigs = {
+            1: { difficulty: 'easy', timeout: 5000 },
+            2: { difficulty: 'medium', timeout: 8000 },
+            3: { difficulty: 'hard', timeout: 10000 },
+            4: { difficulty: 'expert', timeout: 12000 },
+            5: { difficulty: 'master', timeout: 15000 }
+        };
+
         // 游戏状态
         const gameState = {
             theme: localStorage.getItem('sudokuTheme') || 'light',
@@ -238,16 +182,16 @@
                 [0,0,0,0,8,0,0,7,9]
             ],
             2: [
-                [0,0,4,6,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0],
-                [0,0,0,0,0,0,0,0,0]
-            ],
+        [0,0,4,6,0,0,0,0,0],
+        [0,0,0,0,7,5,0,0,0],
+        [0,0,0,0,0,1,0,7,9],
+        [0,7,0,8,0,0,0,1,0],
+        [0,0,2,0,4,0,8,0,0],
+        [0,6,0,0,0,2,0,5,0],
+        [9,2,0,1,0,0,0,0,0],
+        [0,0,0,3,2,0,0,0,0],
+        [0,0,0,0,0,9,7,0,0]
+    ],
             3: [
                 [5,0,0,0,0,0,0,0,0],
                 [0,0,3,6,0,0,0,0,0],
@@ -319,8 +263,17 @@
             }, 0);
         }
         
-        // 初始化游戏
+        // 游戏初始化
         document.addEventListener('DOMContentLoaded', () => {
+            // 使用新的核心模块
+            const difficulty = 'easy'; // 可以根据需要更改难度
+            const { puzzle, solution } = SudokuCore.generateSudokuPuzzle(difficulty);
+
+            // 初始化游戏界面
+            initializeGame(puzzle, solution);
+        });
+
+        function initializeGame(puzzle, solution) {
             // 初始化主题
             initTheme();
             
@@ -339,26 +292,28 @@
             // 添加事件监听
             addEventListeners();
             
-            // 添加安全机制：页面加载后15秒如果还在加载中，强制隐藏
+            // 初始化游戏状态
+            gameState.puzzle = puzzle;
+            gameState.solution = solution;
+            gameState.userGrid = JSON.parse(JSON.stringify(puzzle));
+            gameState.hintsRemaining = 3;
+            gameState.selectedCell = null;
+            gameState.isCompleted = false;
+            
+            // 批量更新UI
+            renderSudokuGrid();
+            updateHintButton();
+            startTimer();
+            updateBestTimeDisplay();
+            
+            // 添加安全机制
             setTimeout(() => {
                 if (gameState.generatingPuzzle) {
                     console.log("安全机制：强制隐藏加载提示");
                     forceHideLoading();
-                    
-                    // 如果游戏还未初始化，尝试初始化
-                    if (gameState.puzzle.length === 0) {
-                        try {
-                            initFallbackGame();
-                        } catch (e) {
-                            console.error("初始化备用游戏失败:", e);
-                        }
-                    }
                 }
             }, 15000);
-            
-            // 生成第一关
-            generateLevel(gameState.currentLevel);
-        });
+        }
         
         // 初始化备用游戏（当主加载失败时）
         function initFallbackGame() {
@@ -370,54 +325,53 @@
             updateHintButton();
         }
         
-        // 创建数字选择面板
         function createNumberPad() {
-            const numberPad = document.getElementById('number-pad');
-            if (!numberPad) return;
-            
-            // 使用DocumentFragment批量创建DOM元素，减少重排重绘
-            const fragment = document.createDocumentFragment();
-            
-            for (let i = 1; i <= 9; i++) {
-                const button = document.createElement('button');
-                button.className = 'btn-handdrawn bg-light border-dark text-dark text-xl font-bold py-2 cell-hover';
-                button.textContent = i;
-                button.dataset.number = i;
-                fragment.appendChild(button);
-            }
-            
-            // 一次性添加所有元素到DOM
-            numberPad.appendChild(fragment);
-            
-            // 使用事件委托处理数字按钮点击，减少事件监听器数量
-            numberPad.addEventListener('click', (e) => {
-                const button = e.target.closest('button[data-number]');
-                if (button) {
-                    const number = parseInt(button.dataset.number, 10);
-                    handleNumberSelection(number);
-                }
-            });
+    const numberPad = document.getElementById('number-pad');
+    if (!numberPad) return;
+
+    // 使用DocumentFragment批量创建DOM元素，减少重排重绘
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 1; i <= 9; i++) {
+        const button = document.createElement('button');
+        button.className = 'btn btn-light';
+        button.textContent = i;
+        button.dataset.number = i;
+        fragment.appendChild(button);
+    }
+
+    // 一次性添加所有元素到DOM
+    numberPad.appendChild(fragment);
+
+    // 使用事件委托处理数字按钮点击，减少事件监听器数量
+    numberPad.addEventListener('click', (e) => {
+        const button = e.target.closest('button[data-number]');
+        if (button) {
+            const number = parseInt(button.dataset.number, 10);
+            handleNumberSelection(number);
         }
+    });
+}
         
         // 创建关卡选择器
         function createLevelSelector() {
             const levelSelector = document.getElementById('level-selector');
             if (!levelSelector) return;
-            
+
             // 使用DocumentFragment批量创建DOM元素，减少重排重绘
             const fragment = document.createDocumentFragment();
-            
+
             for (let i = 1; i <= gameState.maxLevel; i++) {
                 const button = document.createElement('button');
-                button.className = `btn-handdrawn text-white text-lg font-bold py-1 cell-hover ${i === 1 ? 'bg-primary' : 'bg-dark/30'}`;
+                button.className = `btn ${i === 1 ? 'btn-primary' : 'btn-dark'}`;
                 button.textContent = i;
                 button.dataset.level = i;
                 fragment.appendChild(button);
             }
-            
+
             // 一次性添加所有元素到DOM
             levelSelector.appendChild(fragment);
-            
+
             // 使用事件委托处理关卡按钮点击，减少事件监听器数量
             levelSelector.addEventListener('click', (e) => {
                 const button = e.target.closest('button[data-level]');
@@ -430,9 +384,8 @@
                     }
                 }
             });
-            
+
             // 添加一个最终的保险措施，确保加载提示一定会被隐藏
-            // 即使其他隐藏逻辑由于某种原因失败
             setTimeout(() => {
                 if (document.getElementById('loading-overlay') && 
                     !document.getElementById('loading-overlay').classList.contains('hidden')) {
@@ -443,29 +396,19 @@
         }
         
         // 更新关卡按钮状态
-        function updateLevelButtons() {
-            const buttons = document.querySelectorAll('#level-selector button');
-            buttons.forEach(btn => {
-                const level = parseInt(btn.dataset.level);
-                if (level === gameState.currentLevel) {
-                    btn.classList.remove('bg-dark/30');
-                    btn.classList.add('bg-primary');
-                } else {
-                    btn.classList.remove('bg-primary');
-                    btn.classList.add('bg-dark/30');
-                }
-            });
-            
-            // 添加一个最终的保险措施，确保加载提示一定会被隐藏
-            // 即使其他隐藏逻辑由于某种原因失败
-            setTimeout(() => {
-                if (document.getElementById('loading-overlay') && 
-                    !document.getElementById('loading-overlay').classList.contains('hidden')) {
-                    console.log('保险措施: 强制隐藏加载提示');
-                    forceHideLoading();
-                }
-            }, 3000);
+function updateLevelButtons() {
+    const buttons = document.querySelectorAll('#level-selector button');
+    buttons.forEach(btn => {
+        const level = parseInt(btn.dataset.level);
+        if (level === gameState.currentLevel) {
+            btn.classList.remove('btn-dark');
+            btn.classList.add('btn-primary');
+        } else {
+            btn.classList.remove('btn-primary');
+            btn.classList.add('btn-dark');
         }
+    });
+}
         
         // 添加事件监听器
         function addEventListeners() {
@@ -539,39 +482,7 @@
             }
         }
         
-        // 难度配置
-        const difficultyConfig = {
-            1: {
-                targetRemoved: 30,
-                maxAttempts: 15,
-                timeout: 8000,
-                minSolvingTime: 60 // 秒
-            },
-            2: {
-                targetRemoved: 40,
-                maxAttempts: 20,
-                timeout: 10000,
-                minSolvingTime: 120 // 秒
-            },
-            3: {
-                targetRemoved: 45,
-                maxAttempts: 25,
-                timeout: 12000,
-                minSolvingTime: 180 // 秒
-            },
-            4: {
-                targetRemoved: 48,
-                maxAttempts: 30,
-                timeout: 14000,
-                minSolvingTime: 240 // 秒
-            },
-            5: {
-                targetRemoved: 50,
-                maxAttempts: 35,
-                timeout: 16000,
-                minSolvingTime: 300 // 秒
-            }
-        };
+
 
         // 开始计时器
         function startTimer() {
@@ -690,7 +601,8 @@
             // 重置取消加载的状态
             window.loadingCanceled = false;
             
-            const config = difficultyConfig[level] || difficultyConfig[3];
+            // 使用专门的关卡配置
+            const config = levelConfigs[level] || levelConfigs[3];
             
             // 显示加载提示
             gameState.generatingPuzzle = true;
@@ -886,44 +798,77 @@
             }, 30000); // 30秒的终极保险
         }
         
-        // 加载备用谜题的辅助函数（提取为单独函数以便重用）
         function loadFallbackPuzzle(level) {
+    try {
+        // 使用优化版的网格深拷贝方法
+        const copyGrid = (grid) => grid.map(row => [...row]);
+        
+        // 选择一个肯定能求解的谜题作为备用（使用第一关的谜题，它已经被验证可以求解）
+        const fallbackPuzzle = [
+            [5,3,0,0,7,0,0,0,0],
+            [6,0,0,1,9,5,0,0,0],
+            [0,9,8,0,0,0,0,6,0],
+            [8,0,0,0,6,0,0,0,3],
+            [4,0,0,8,0,3,0,0,1],
+            [7,0,0,0,2,0,0,0,6],
+            [0,6,0,0,0,0,2,8,0],
+            [0,0,0,4,1,9,0,0,5],
+            [0,0,0,0,8,0,0,7,9]
+        ];
+        
+        gameState.puzzle = copyGrid(fallbackPuzzle);
+        gameState.solution = copyGrid(gameState.puzzle);
+        
+        // 使用setTimeout避免立即阻塞UI
+        setTimeout(() => {
             try {
-                // 使用优化版的网格深拷贝方法
-                const copyGrid = (grid) => grid.map(row => [...row]);
-                
-                gameState.puzzle = copyGrid(puzzlePatterns[Math.min(level, 3)]);
-                gameState.solution = copyGrid(gameState.puzzle);
-                
-                // 使用setTimeout避免立即阻塞UI
-                setTimeout(() => {
-                    try {
-                        if (sudokuSolver.solveGrid(gameState.solution)) {
-                            gameState.userGrid = copyGrid(gameState.puzzle);
-                            
-                            requestAnimationFrame(() => {
-                                renderSudokuGrid();
-                                updateHintButton();
-                                startTimer();
-                                updateBestTimeDisplay();
-                                
-                                setTimeout(() => {
-                                    forceHideLoading();
-                                }, 300);
-                            });
-                        } else {
-                            throw new Error("无法求解备用谜题");
-                        }
-                    } catch (e) {
-                        console.error("使用备用谜题时出错:", e);
-                        initFallbackGame();
-                    }
-                }, 100);
+                if (sudokuSolver.solveGrid(gameState.solution)) {
+                    gameState.userGrid = copyGrid(gameState.puzzle);
+                    
+                    requestAnimationFrame(() => {
+                        renderSudokuGrid();
+                        updateHintButton();
+                        startTimer();
+                        updateBestTimeDisplay();
+                        
+                        setTimeout(() => {
+                            forceHideLoading();
+                        }, 300);
+                    });
+                } else {
+                    console.error("无法求解备用谜题，直接使用已知解");
+                    // 直接使用已知的解决方案
+                    gameState.solution = [
+                        [5,3,4,6,7,8,9,1,2],
+                        [6,7,2,1,9,5,3,4,8],
+                        [1,9,8,3,4,2,5,6,7],
+                        [8,5,9,7,6,1,4,2,3],
+                        [4,2,6,8,5,3,7,9,1],
+                        [7,1,3,9,2,4,8,5,6],
+                        [9,6,1,5,3,7,2,8,4],
+                        [2,8,7,4,1,9,6,3,5],
+                        [3,4,5,2,8,6,1,7,9]
+                    ];
+                    gameState.userGrid = copyGrid(gameState.puzzle);
+                    
+                    requestAnimationFrame(() => {
+                        renderSudokuGrid();
+                        updateHintButton();
+                        startTimer();
+                        updateBestTimeDisplay();
+                        forceHideLoading();
+                    });
+                }
             } catch (e) {
-                console.error("加载备用谜题时出错:", e);
+                console.error("使用备用谜题时出错:", e);
                 initFallbackGame();
             }
-        }
+        }, 100);
+    } catch (e) {
+        console.error("加载备用谜题时出错:", e);
+        initFallbackGame();
+    }
+}
         
         // 渲染数独网格（高度优化版 - 使用DOM缓存和最小化重排重绘）
         // 缓存DOM元素引用
@@ -933,10 +878,10 @@
         function renderSudokuGrid() {
             const gridContainer = document.getElementById('sudoku-grid');
             if (!gridContainer) return;
-            
+
             const selectedRow = gameState.selectedCell?.row;
             const selectedCol = gameState.selectedCell?.col;
-            
+
             // 使用requestAnimationFrame确保UI更新在浏览器重绘前执行
             requestAnimationFrame(() => {
                 // 检查是否需要创建新的单元格缓存
@@ -944,19 +889,20 @@
                     gridContainer.innerHTML = '';
                     const fragment = document.createDocumentFragment();
                     cellCache = new Array(9).fill(null).map(() => new Array(9).fill(null));
-                    
+
                     for (let row = 0; row < 9; row++) {
                         for (let col = 0; col < 9; col++) {
                             const cell = document.createElement('div');
                             cell.dataset.row = row;
                             cell.dataset.col = col;
+                            cell.className = 'sudoku-cell';
                             cellCache[row][col] = cell;
                             fragment.appendChild(cell);
                         }
                     }
-                    
+
                     gridContainer.appendChild(fragment);
-                    
+
                     // 添加事件委托处理单元格点击，只添加一次
                     if (!gridClickHandler) {
                         gridClickHandler = (e) => {
@@ -970,71 +916,58 @@
                         gridContainer.addEventListener('click', gridClickHandler);
                     }
                 }
-                
+
                 // 批量更新单元格属性，减少重排
                 const updateBatch = [];
-                
+
                 for (let row = 0; row < 9; row++) {
                     for (let col = 0; col < 9; col++) {
                         const cell = cellCache[row][col];
                         const value = gameState.puzzle[row][col];
                         const isFixed = value !== 0;
                         const isSelected = row === selectedRow && col === selectedCol;
+
+                        // 重置单元格类名
+                        cell.className = 'sudoku-cell';
                         
-                        // 预先构建类名字符串（优化版）
-                        let cellClasses = 'flex items-center justify-center text-xl md:text-2xl font-bold border border-dark/30 ';
-                        cellClasses += 'cell-hover transition-all duration-200 ';
-                        cellClasses += isFixed ? 'bg-light/80 cursor-default' : 'bg-white cursor-pointer';
+                        // 添加基本样式类
+                        if (isFixed) {
+                            cell.classList.add('fixed');
+                        } else {
+                            cell.classList.add('user-input');
+                        }
+                        
+                        // 添加选中状态
+                        if (isSelected) {
+                            cell.classList.add('selected');
+                        }
                         
                         // 添加3x3区块边框
                         if ((col + 1) % 3 === 0 && col !== 8) {
-                            cellClasses += ' sudoku-section';
+                            cell.classList.add('sudoku-section');
                         } else {
-                            cellClasses += ' sudoku-section-right';
+                            cell.classList.add('sudoku-section-right');
                         }
                         
                         if ((row + 1) % 3 === 0 && row !== 8) {
-                            cellClasses += ' sudoku-section';
+                            cell.classList.add('sudoku-section');
                         } else {
-                            cellClasses += ' sudoku-section-bottom';
+                            cell.classList.add('sudoku-section-bottom');
                         }
-                        
-                        // 选中单元格样式
-                        if (isSelected) {
-                            cellClasses += ' bg-primary/30';
-                        }
-                        
-                        updateBatch.push({
-                            cell,
-                            classes: cellClasses,
-                            value: value,
-                            isFixed: isFixed
-                        });
+
+                        updateBatch.push({ cell, value, isFixed });
                     }
                 }
-                
+
                 // 使用requestAnimationFrame批量应用更新，减少重绘次数
                 requestAnimationFrame(() => {
                     for (let i = 0; i < updateBatch.length; i++) {
-                        const { cell, classes, value, isFixed } = updateBatch[i];
-                        
-                        // 只在类名变化时更新
-                        if (cell.className !== classes) {
-                            cell.className = classes;
-                        }
-                        
+                        const { cell, value, isFixed } = updateBatch[i];
+
                         // 更新内容
                         if (value !== 0) {
                             if (cell.textContent !== value.toString()) {
                                 cell.textContent = value;
-                                // 更新文本颜色类
-                                if (isFixed) {
-                                    cell.classList.add('text-dark');
-                                    cell.classList.remove('text-secondary');
-                                } else {
-                                    cell.classList.add('text-secondary');
-                                    cell.classList.remove('text-dark');
-                                }
                             }
                         } else if (cell.textContent !== '') {
                             cell.textContent = '';
